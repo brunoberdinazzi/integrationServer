@@ -1,13 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const xml2js = require('xml2js'); // Importe a biblioteca xml2js
+const xml2js = require('xml2js'); 
 const xmlDataModel = require('./models/xmlData');
 
 require('dotenv').config();
 
 const app = express();
-app.use(express.json()); // Adicione o middleware para análise de JSON
+app.use(express.json()); 
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -15,7 +14,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 app.post('/xml/upload', (req, res) => {
-  const xmlData = req.body.xml; // Supondo que o XML seja enviado no corpo da solicitação com a chave "xml"
+  const xmlData = req.body.xml; 
 
   const parser = new xml2js.Parser();
 
@@ -24,13 +23,11 @@ app.post('/xml/upload', (req, res) => {
       return res.status(500).json({ error: 'Erro na análise XML' });
     }
 
-    // Agora você pode acessar os dados no objeto result e salvá-los no MongoDB
     const xmlObject = result;
 
     const newData = new xmlDataModel({
       campo1: xmlObject.dado1,
       campo2: xmlObject.dado2,
-      // Adicione mais campos conforme necessário
     });
 
     newData.save((err, data) => {
